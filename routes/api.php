@@ -7,6 +7,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\CommonApiController;
+use App\Http\Controllers\MicrosoftAuthController;
+use App\Http\Controllers\MicrosoftAuthReturnController;
+use App\Http\Controllers\dashboardController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -57,4 +60,9 @@ Route::middleware('auth:api')->group(function (){
         Route::delete('delete/{model}/{id}','destroy')->whereAlpha('model')->whereNumber('id')->name('delete');
     });
 
+    Route::get('/dashboard-api/status-card', [dashboardController::class, 'getstatuscard']);
+
 });
+
+Route::get('/microsoft-login', [MicrosoftAuthController::class, 'microsoftAuthAccess']);
+Route::get('/auth/callback', [MicrosoftAuthReturnController::class, 'handleMicrosoftCallback']);

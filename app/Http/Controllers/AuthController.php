@@ -22,7 +22,22 @@ class AuthController extends Controller
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
-        $credentials = $request->only('email', 'password');
+        $userDeatil = User::where('email', $request->email)->first();
+        if (!empty($userDeatil)) {
+            $credentials['email'] = $userDeatil['email'];
+            $credentials['password'] = $request->password;
+        } else {
+            $userDeatil = User::where('username', $request->email)->first();
+            if (!empty($userDeatil)) {
+                $credentials['username'] = $userDeatil['username'];
+                $credentials['password'] = $request->password;
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Invailid username or password.',
+                ], 302);
+            }
+        }
 
         $token = Auth::attempt($credentials);
         if (!$token) {
@@ -40,7 +55,7 @@ class AuthController extends Controller
                     'token' => $token,
                     'type' => 'bearer',
                 ]
-            ]);
+        ]);
 
     }
 
