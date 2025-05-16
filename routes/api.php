@@ -61,6 +61,7 @@ Route::middleware('auth:api')->group(function (){
     });
 
     Route::get('/dashboard-api/status-card', [dashboardController::class, 'getstatuscard']);
+    Route::post('/dashbpard-api/getFormDataNumFilter', [dashboardController::class, 'getFormDataNumFilter']);
 
 });
 
